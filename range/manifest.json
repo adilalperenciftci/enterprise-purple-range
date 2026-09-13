@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "domain": "LAB.AVR.LOCAL",
+  "network": "10.88.0.0/24",
+  "physical_networks": ["192.0.2.0/24", "172.16.0.0/12"],
+  "hosts": {
+    "DC01": {"ip": "10.88.0.10", "role": "domain_controller"},
+    "WIN11": {"ip": "10.88.0.20", "role": "endpoint"},
+    "KALI": {"ip": "10.88.0.30", "role": "research"},
+    "META": {"ip": "10.88.0.40", "role": "vulnerable_target"}
+  },
+  "approved_pairs": [
+    ["KALI", "META"],
+    ["KALI", "WIN11"],
+    ["WIN11", "DC01"],
+    ["WIN11", "META"]
+  ],
+  "synthetic_credential_roots": ["C:\\AVR-Lab\\Synthetic", "/opt/avr/synthetic"]
+}
