@@ -28,22 +28,23 @@ if (-not (Test-Path -LiteralPath $IdentitySecret)) {
 }
 
 function Invoke-Guest([string[]]$Arguments) {
-    $User = if ($Phase -eq 'Promote') { 'lablocal' } else { 'LAB\Administrator' }
-    & $VBox guestcontrol $Vm @Arguments --username $User --passwordfile $LoginSecret
+    if ($Phase -eq 'Promote') {
+        & $VBox guestcontrol $Vm @Arguments --username lablocal --passwordfile $LoginSecret
+    } else {
+        & $VBox guestcontrol $Vm @Arguments --username Administrator --domain LAB --passwordfile $LoginSecret
+    }
     if ($LASTEXITCODE -ne 0) { throw 'VirtualBox guest operation failed.' }
 }
 
 Invoke-Guest @('mkdir', '--parents', 'C:\AVR-Provision')
 if ($Phase -eq 'Promote') {
-    Invoke-Guest @('copyto', '--target-directory', 'C:\AVR-Provision', (Join-Path $Root 'infra\guest\configure-dc01.ps1'), $DsrmSecret)
+    Invoke-Guest @('copyto', '--target-directory=C:\AVR-Provision\', (Join-Path $Root 'infra\guest\configure-dc01.ps1'), $DsrmSecret)
     & $VBox guestcontrol $Vm run --username lablocal --passwordfile $LoginSecret `
         --exe 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -- `
-        'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -NonInteractive `
-        -ExecutionPolicy RemoteSigned -File 'C:\AVR-Provision\configure-dc01.ps1'
+        -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File 'C:\AVR-Provision\configure-dc01.ps1'
 } else {
-    Invoke-Guest @('copyto', '--target-directory', 'C:\AVR-Provision', (Join-Path $Root 'infra\guest\create-lab-identities.ps1'), $IdentitySecret)
-    & $VBox guestcontrol $Vm run --username 'LAB\Administrator' --passwordfile $LoginSecret `
+    Invoke-Guest @('copyto', '--target-directory=C:\AVR-Provision\', (Join-Path $Root 'infra\guest\create-lab-identities.ps1'), $IdentitySecret)
+    & $VBox guestcontrol $Vm run --username Administrator --domain LAB --passwordfile $LoginSecret `
         --exe 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -- `
-        'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -NoProfile -NonInteractive `
-        -ExecutionPolicy RemoteSigned -File 'C:\AVR-Provision\create-lab-identities.ps1'
+        -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File 'C:\AVR-Provision\create-lab-identities.ps1'
 }

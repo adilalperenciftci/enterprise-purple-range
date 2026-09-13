@@ -5,3 +5,7 @@ The authorized range is the single VirtualBox internal network `epr-isolated`, `
 Provisioning is separate from execution. Windows media is downloaded from Microsoft outside Git, installation credentials are generated with the operating-system CSPRNG below the ignored `secrets/` directory, and no password is embedded in provisioning code. Any temporary provisioning connectivity must be removed before a snapshot is eligible for experiments.
 
 This validates configuration at a point in time; it does not defend against a hostile hypervisor administrator.
+
+## Verified state
+
+On 2026-09-13, `EPR-DC01` was installed from the recorded Windows Server 2025 Evaluation media, attached only to `epr-isolated`, assigned `10.88.0.10`, and promoted as the domain controller for `LAB.AVR.LOCAL`. The six synthetic accounts declared by the range were queried successfully. VirtualBox snapshot `DC01-FOREST` records that state. This is infrastructure validation, not evidence that any attack experiment has run.

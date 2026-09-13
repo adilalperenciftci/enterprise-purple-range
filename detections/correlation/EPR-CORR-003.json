@@ -1,0 +1,14 @@
+{
+  "id":"EPR-CORR-003",
+  "title":"Authentication, host transition, and target process",
+  "attack":["T1021.006"],
+  "profile":"auth_host_transition",
+  "required_planes":["endpoint","identity","network"],
+  "join":"transition identifier",
+  "required_kinds":["authentication","network_connection","target_process"],
+  "malicious_fixture":"EXP-018",
+  "benign_fixture":"BENIGN-005",
+  "known_false_positives":"authorized remote administration absent an allowlisted experiment context",
+  "blind_spots":"protocols that do not expose a stable authentication-to-process join key",
+  "validation":"NOT_TESTED"
+}

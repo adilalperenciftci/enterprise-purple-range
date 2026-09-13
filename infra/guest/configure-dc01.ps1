@@ -1,4 +1,5 @@
 $ErrorActionPreference = 'Stop'
+Start-Transcript -LiteralPath 'C:\AVR-Provision\configure-dc01.log' -Force
 
 $Interface = Get-NetAdapter -Physical | Where-Object Status -eq 'Up' | Select-Object -First 1
 if (-not $Interface) { throw 'No active isolated adapter was found.' }
@@ -8,7 +9,7 @@ if (-not (Get-NetIPAddress -InterfaceIndex $Interface.ifIndex -IPAddress '10.88.
     New-NetIPAddress -InterfaceIndex $Interface.ifIndex -IPAddress '10.88.0.10' -PrefixLength 24
 }
 Set-DnsClientServerAddress -InterfaceIndex $Interface.ifIndex -ServerAddresses '127.0.0.1'
-Rename-Computer -NewName 'DC01' -Force
+if ($env:COMPUTERNAME -ne 'DC01') { Rename-Computer -NewName 'DC01' -Force }
 Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
 
 $DsrmPath = 'C:\AVR-Provision\dsrm-password.txt'
@@ -17,4 +18,3 @@ $Dsrm = ConvertTo-SecureString ([IO.File]::ReadAllText($DsrmPath).Trim()) -AsPla
 Remove-Item -LiteralPath $DsrmPath -Force
 Install-ADDSForest -DomainName 'LAB.AVR.LOCAL' -DomainNetbiosName 'LAB' -InstallDNS `
     -SafeModeAdministratorPassword $Dsrm -NoRebootOnCompletion:$false -Force
-

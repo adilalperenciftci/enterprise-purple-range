@@ -32,7 +32,13 @@ class TopologyTests(unittest.TestCase):
             with self.subTest(mutation=mutation), self.assertRaises(AuthorizationError):
                 validate_vm({**VALID, **mutation}, VMRequirement("EPR-WIN11", "080027880020"))
 
+    def test_vagrant_layout_allows_null_provisioning_adapter(self) -> None:
+        values = {
+            "name": "EPR-KALI", "VMState": "running", "nic1": "null",
+            "nic2": "intnet", "intnet2": "epr-isolated", "macaddress2": "080027880030",
+        }
+        validate_vm(values, VMRequirement("EPR-KALI", "080027880030", 2))
+
 
 if __name__ == "__main__":
     unittest.main()
-

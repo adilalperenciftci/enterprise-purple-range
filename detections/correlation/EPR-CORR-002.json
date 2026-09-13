@@ -1,0 +1,14 @@
+{
+  "id":"EPR-CORR-002",
+  "title":"Synthetic credential access followed by authentication and execution",
+  "attack":["T1552.001","T1021.006"],
+  "profile":"credential_auth_execution",
+  "required_planes":["endpoint","identity","network"],
+  "join":"synthetic credential identifier",
+  "required_kinds":["credential_access","authentication","network_connection","target_process"],
+  "malicious_fixture":"EXP-018",
+  "benign_fixture":"BENIGN-005",
+  "known_false_positives":"approved synthetic-credential validation using the same canary",
+  "blind_spots":"credential use outside observed authentication protocols",
+  "validation":"NOT_TESTED"
+}

@@ -1,0 +1,35 @@
+Vagrant.configure("2") do |config|
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.ssh.insert_key = true
+
+  config.vm.define "kali" do |kali|
+    kali.vm.box = "kalilinux/rolling"
+    kali.vm.box_version = "2026.2.0"
+    kali.vm.hostname = "epr-kali"
+    kali.vm.network "private_network", ip: "10.88.0.30", virtualbox__intnet: "epr-isolated"
+    kali.vm.provider "virtualbox" do |vb|
+      vb.name = "EPR-KALI"
+      vb.memory = 3072
+      vb.cpus = 2
+      vb.customize ["modifyvm", :id, "--macaddress2", "080027880030"]
+    end
+    kali.vm.provision "shell", inline: <<-SHELL
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      apt-get install -y nmap metasploit-framework tcpdump tshark suricata zeek curl
+    SHELL
+  end
+
+  config.vm.define "meta" do |meta|
+    meta.vm.box = "rapid7/metasploitable3-ub1404"
+    meta.vm.box_version = "0.1.12-weekly"
+    meta.vm.hostname = "epr-meta"
+    meta.vm.network "private_network", ip: "10.88.0.40", virtualbox__intnet: "epr-isolated"
+    meta.vm.provider "virtualbox" do |vb|
+      vb.name = "EPR-META"
+      vb.memory = 2048
+      vb.cpus = 2
+      vb.customize ["modifyvm", :id, "--macaddress2", "080027880040"]
+    end
+  end
+end

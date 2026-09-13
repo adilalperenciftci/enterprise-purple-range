@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/redcanaryco/atomic-red-team",
+  "commit": "388942adbd9641f4dfdcf079d7efe9a75ec0ac43",
+  "tests": [
+    {"technique":"T1059.001","guid":"a538de64-1c74-46ed-aa60-b995ed302598","name":"PowerShell Command Execution","experiment":"EXP-005"},
+    {"technique":"T1059.003","guid":"9e8894c0-50bd-4525-a96c-d4ac78ece388","name":"Create and Execute Batch Script","experiment":"EXP-006"},
+    {"technique":"T1082","guid":"66703791-c902-4560-8770-42b8a91f7667","name":"System Information Discovery","experiment":"EXP-007"},
+    {"technique":"T1016","guid":"970ab6a1-0157-4f3f-9a73-ec4166754b23","name":"System Network Configuration Discovery on Windows","experiment":"EXP-008"},
+    {"technique":"T1007","guid":"89676ba1-b1f8-47ee-b940-2e1a113ebc71","name":"System Service Discovery","experiment":"EXP-009"},
+    {"technique":"T1053.005","guid":"fec27f65-db86-4c2d-b66c-61945aee87c2","name":"Scheduled Task Startup Script","experiment":"EXP-010"}
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "experiments": [
+    {"id":"EXP-001","category":"exploit","title":"Restricted service enumeration","source":"KALI","target":"META","technique":"T1046","planes":["network"]},
+    {"id":"EXP-002","category":"exploit","title":"Metasploitable service exploit one","source":"KALI","target":"META","technique":"T1190","planes":["endpoint","network"]},
+    {"id":"EXP-003","category":"exploit","title":"Metasploitable service exploit two","source":"KALI","target":"META","technique":"T1190","planes":["endpoint","network"]},
+    {"id":"EXP-004","category":"exploit","title":"Isolated web exploitation","source":"KALI","target":"META","technique":"T1190","planes":["endpoint","network"]},
+    {"id":"EXP-005","category":"atomic","title":"PowerShell execution","source":"WIN11","target":"WIN11","technique":"T1059.001","planes":["endpoint"]},
+    {"id":"EXP-006","category":"atomic","title":"Windows command shell execution","source":"WIN11","target":"WIN11","technique":"T1059.003","planes":["endpoint"]},
+    {"id":"EXP-007","category":"atomic","title":"System discovery","source":"WIN11","target":"WIN11","technique":"T1082","planes":["endpoint"]},
+    {"id":"EXP-008","category":"atomic","title":"Network configuration discovery","source":"WIN11","target":"WIN11","technique":"T1016","planes":["endpoint"]},
+    {"id":"EXP-009","category":"atomic","title":"Service discovery","source":"WIN11","target":"WIN11","technique":"T1007","planes":["endpoint"]},
+    {"id":"EXP-010","category":"atomic","title":"Scheduled task benign emulation","source":"WIN11","target":"WIN11","technique":"T1053.005","planes":["endpoint"]},
+    {"id":"EXP-011","category":"correlation","title":"Windows process and network correlation","source":"WIN11","target":"DC01","technique":"T1059.001","planes":["endpoint","network"]},
+    {"id":"EXP-012","category":"resilience","title":"PowerShell representation variant","source":"WIN11","target":"WIN11","technique":"T1059.001","planes":["endpoint"]},
+    {"id":"EXP-013","category":"credential","title":"Synthetic file credential access","source":"WIN11","target":"WIN11","technique":"T1552.001","planes":["endpoint"]},
+    {"id":"EXP-014","category":"credential","title":"Synthetic service credential access","source":"WIN11","target":"WIN11","technique":"T1552.001","planes":["endpoint"]},
+    {"id":"EXP-015","category":"persistence","title":"Scheduled task persistence","source":"WIN11","target":"WIN11","technique":"T1053.005","planes":["endpoint"]},
+    {"id":"EXP-016","category":"persistence","title":"Service persistence","source":"WIN11","target":"WIN11","technique":"T1543.003","planes":["endpoint"]},
+    {"id":"EXP-017","category":"movement","title":"Controlled WinRM transition","source":"WIN11","target":"DC01","technique":"T1021.006","planes":["endpoint","identity","network"]},
+    {"id":"EXP-018","category":"correlation","title":"Authentication host-transition correlation","source":"WIN11","target":"DC01","technique":"T1021.006","planes":["endpoint","identity","network"]},
+    {"id":"EXP-019","category":"resilience","title":"Path and executable-name variation","source":"WIN11","target":"WIN11","technique":"T1036","planes":["endpoint"]},
+    {"id":"EXP-020","category":"resilience","title":"Required telemetry loss","source":"WIN11","target":"META","technique":null,"planes":["endpoint","network"]}
+  ],
+  "baselines": [
+    {"id":"BENIGN-001","title":"Local identity query","source":"WIN11","target":"WIN11"},
+    {"id":"BENIGN-002","title":"Approved administrator PowerShell","source":"WIN11","target":"WIN11"},
+    {"id":"BENIGN-003","title":"Normal DNS lookup","source":"WIN11","target":"DC01"},
+    {"id":"BENIGN-004","title":"Normal domain authentication","source":"WIN11","target":"DC01"},
+    {"id":"BENIGN-005","title":"Approved WinRM administration","source":"WIN11","target":"DC01"},
+    {"id":"BENIGN-006","title":"Normal HTTP request","source":"WIN11","target":"META"}
+  ]
+}

@@ -26,7 +26,17 @@ class RunnerTests(unittest.TestCase):
         with self.assertRaises(AuthorizationError):
             prepare("EXP-999", "10.88.0.20")
 
+    @patch("pathlib.Path.is_file", return_value=False)
+    @patch("avr.runner._show_vm")
+    def test_cross_host_experiment_validates_both_vms(self, show_vm, _is_file) -> None:
+        show_vm.side_effect = [
+            VALID_VM,
+            {**VALID_VM, "name": "EPR-DC01", "macaddress1": "080027880010"},
+        ]
+        with self.assertRaisesRegex(AuthorizationError, "password file"):
+            prepare("EXP-011", "10.88.0.10")
+        self.assertEqual([call.args[0] for call in show_vm.call_args_list], ["EPR-WIN11", "EPR-DC01"])
+
 
 if __name__ == "__main__":
     unittest.main()
-

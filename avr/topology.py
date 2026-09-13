@@ -22,6 +22,7 @@ def parse_machine_readable(raw: str) -> dict[str, str]:
 class VMRequirement:
     name: str
     mac: str
+    slot: int = 1
 
 
 def validate_vm(values: dict[str, str], requirement: VMRequirement) -> None:
@@ -29,12 +30,14 @@ def validate_vm(values: dict[str, str], requirement: VMRequirement) -> None:
         raise AuthorizationError("VM identity mismatch")
     if values.get("VMState") != "running":
         raise AuthorizationError("required VM is not running")
-    if values.get("nic1") != "intnet" or values.get("intnet1") != EXPECTED_NETWORK:
+    slot = requirement.slot
+    if values.get(f"nic{slot}") != "intnet" or values.get(f"intnet{slot}") != EXPECTED_NETWORK:
         raise AuthorizationError("primary adapter is not on the isolated network")
-    if values.get("macaddress1", "").casefold() != requirement.mac.casefold():
+    if values.get(f"macaddress{slot}", "").casefold() != requirement.mac.casefold():
         raise AuthorizationError("VM MAC identity mismatch")
-    for slot in range(2, 9):
-        mode = values.get(f"nic{slot}", "none")
+    for candidate in range(1, 9):
+        if candidate == slot:
+            continue
+        mode = values.get(f"nic{candidate}", "none")
         if mode not in {"none", "null"}:
-            raise AuthorizationError(f"adapter {slot} is not disconnected")
-
+            raise AuthorizationError(f"adapter {candidate} is not disconnected")

@@ -1,0 +1,14 @@
+{
+  "id":"EPR-CORR-001",
+  "title":"Process, internal connection, and marker correlation",
+  "attack":["T1059.001"],
+  "profile":"process_network_marker",
+  "required_planes":["endpoint","network"],
+  "join":"process lifetime",
+  "required_kinds":["process_create","network_connection","marker_write"],
+  "malicious_fixture":"EXP-011",
+  "benign_fixture":"BENIGN-002",
+  "known_false_positives":"approved automation that intentionally performs all three actions",
+  "blind_spots":"lost Sysmon process GUID or unavailable network evidence",
+  "validation":"NOT_TESTED"
+}

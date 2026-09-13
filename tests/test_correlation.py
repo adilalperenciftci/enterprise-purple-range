@@ -70,6 +70,43 @@ class CorrelationTests(unittest.TestCase):
     def test_no_evidence_is_not_evaluable(self) -> None:
         self.assertEqual(evaluate(EvidenceGraph(), "EXP-011").verdict, Verdict.NOT_EVALUABLE)
 
+    def test_credential_auth_execution_requires_three_planes(self) -> None:
+        events = tuple(
+            Evidence.create(
+                event_id=f"c{index}", experiment_id="EXP-018",
+                timestamp_utc=f"2026-09-13T03:01:0{index}Z", plane=plane,
+                kind=kind, attributes={"credential_id": "SYNTH-SVC-REMOTE"},
+            )
+            for index, (plane, kind) in enumerate((
+                ("endpoint", "credential_access"), ("identity", "authentication"),
+                ("network", "network_connection"), ("endpoint", "target_process")), 1)
+        )
+        self.assertEqual(
+            evaluate(self.graph(events), "EXP-018", "credential_auth_execution").verdict,
+            Verdict.CONFIRMED_ATTACK,
+        )
+        self.assertEqual(
+            evaluate(self.graph((events[0], events[1], events[3])), "EXP-018", "credential_auth_execution").verdict,
+            Verdict.INCOMPLETE,
+        )
+
+    def test_auth_transition_rejects_mismatched_join_ids(self) -> None:
+        events = tuple(
+            Evidence.create(
+                event_id=f"t{index}", experiment_id="EXP-018",
+                timestamp_utc=f"2026-09-13T03:02:0{index}Z", plane=plane,
+                kind=kind, attributes={"transition_id": transition},
+            )
+            for index, (plane, kind, transition) in enumerate((
+                ("identity", "authentication", "A"),
+                ("network", "network_connection", "A"),
+                ("endpoint", "target_process", "B")), 1)
+        )
+        self.assertEqual(
+            evaluate(self.graph(events), "EXP-018", "auth_host_transition").verdict,
+            Verdict.SUSPICIOUS,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

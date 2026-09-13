@@ -22,6 +22,7 @@ class Experiment:
     vm: VMRequirement
     executable: str
     arguments: tuple[str, ...]
+    target_vm: VMRequirement | None = None
 
 
 EXPERIMENTS = {
@@ -38,6 +39,14 @@ EXPERIMENTS = {
         VMRequirement("EPR-WIN11", "080027880020"),
         r"C:\Windows\System32\whoami.exe",
         (),
+    ),
+    "EXP-011": Experiment(
+        "WIN11",
+        "DC01",
+        VMRequirement("EPR-WIN11", "080027880020"),
+        r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
+        ("-NoProfile", "-NonInteractive", "-File", r"C:\AVR-Lab\Experiments\EXP-011.ps1"),
+        VMRequirement("EPR-DC01", "080027880010"),
     ),
 }
 
@@ -63,6 +72,8 @@ def prepare(experiment_id: str, target_ip: str) -> tuple[Experiment, Path]:
     manifest = RangeManifest.load(ROOT / "range" / "manifest.json")
     manifest.authorize(experiment.source, experiment.target, target_ip)
     validate_vm(_show_vm(experiment.vm.name), experiment.vm)
+    if experiment.target_vm is not None:
+        validate_vm(_show_vm(experiment.target_vm.name), experiment.target_vm)
     secret = ROOT / "secrets" / "win11-password.txt"
     if not secret.is_file():
         raise AuthorizationError("lab password file is unavailable")
