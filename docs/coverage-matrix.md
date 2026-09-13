@@ -14,7 +14,7 @@
 | EXP-008 | T1016 | no | yes | no | no | no | pending | BENIGN-001 | no | NOT_TESTED |
 | EXP-009 | T1007 | no | yes | no | no | no | pending | BENIGN-001 | no | NOT_TESTED |
 | EXP-010 | T1053.005 | no | yes | no | no | yes | pending | BENIGN-002 | no | NOT_TESTED |
-| EXP-011 | T1059.001 | yes | yes | no | no | no | EPR-CORR-001 | BENIGN-002 | yes | NOT_TESTED |
+| EXP-011 | T1059.001 | yes | yes | no | no | no | EPR-CORR-001 | BENIGN-001 | replayed | REPRODUCED/DETECTED |
 | EXP-012 | T1059.001 | no | yes | no | no | no | pending | BENIGN-002 | yes | NOT_TESTED |
 | EXP-013 | T1552.001 | no | yes | no | yes | no | pending | BENIGN-002 | yes | NOT_TESTED |
 | EXP-014 | T1552.001 | no | yes | no | yes | no | pending | BENIGN-002 | yes | NOT_TESTED |

@@ -11,6 +11,7 @@ class CorrelationProfile:
     reason: str
     required_planes: frozenset[str]
     required_kinds: frozenset[str]
+    trigger_kinds: frozenset[str]
     join_attribute: str | None = None
 
 
@@ -19,17 +20,20 @@ PROFILES = {
         "EPR-PROCESS-NETWORK-MARKER",
         frozenset({"endpoint", "network"}),
         frozenset({"process_create", "network_connection", "marker_write"}),
+        frozenset({"marker_write"}),
     ),
     "credential_auth_execution": CorrelationProfile(
         "EPR-CREDENTIAL-AUTH-EXECUTION",
         frozenset({"endpoint", "identity", "network"}),
         frozenset({"credential_access", "authentication", "network_connection", "target_process"}),
+        frozenset({"credential_access"}),
         "credential_id",
     ),
     "auth_host_transition": CorrelationProfile(
         "EPR-AUTH-HOST-TRANSITION",
         frozenset({"endpoint", "identity", "network"}),
         frozenset({"authentication", "network_connection", "target_process"}),
+        frozenset({"authentication", "target_process"}),
         "transition_id",
     ),
 }
@@ -87,7 +91,8 @@ def evaluate(
             tuple(sorted(planes)),
             "Independent required telemetry planes correlate on one stable evidence key.",
         )
-    suspicious = tuple(event.event_id for event in events if event.kind in profile.required_kinds)
+    triggered = any(event.kind in profile.trigger_kinds for event in events)
+    suspicious = tuple(event.event_id for event in events if event.kind in profile.required_kinds) if triggered else ()
     if suspicious:
         return Decision(
             Verdict.SUSPICIOUS,

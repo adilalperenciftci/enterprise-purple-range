@@ -1,4 +1,5 @@
 $ErrorActionPreference = 'Stop'
+Start-Transcript -LiteralPath 'C:\AVR-Provision\join-win11-domain.log' -Force
 
 $Interface = Get-NetAdapter -Physical | Where-Object Status -eq 'Up' | Select-Object -First 1
 if (-not $Interface) { throw 'No active isolated adapter was found.' }
@@ -16,5 +17,11 @@ $Credential = [PSCredential]::new(
     'LAB\labadmin',
     (ConvertTo-SecureString $Secrets.labadmin -AsPlainText -Force)
 )
+if ($env:COMPUTERNAME -eq 'WIN11') {
+    Add-Computer -DomainName 'LAB.AVR.LOCAL' -Credential $Credential -Force
+} else {
+    Add-Computer -DomainName 'LAB.AVR.LOCAL' -Credential $Credential -NewName 'WIN11' -Force
+}
 Remove-Item -LiteralPath $SecretPath -Force
-Add-Computer -DomainName 'LAB.AVR.LOCAL' -Credential $Credential -NewName 'WIN11' -Restart -Force
+Stop-Transcript
+Restart-Computer -Force

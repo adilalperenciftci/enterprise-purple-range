@@ -20,11 +20,15 @@ if ($Phase -eq 'Experiments') {
         $Secrets = Get-Content -Raw -LiteralPath $DomainSecrets | ConvertFrom-Json
         [IO.File]::WriteAllText($LabAdminSecret, $Secrets.labadmin)
     }
-    $User = 'LAB\labadmin'
+    $User = 'labadmin'
     $AuthSecret = $LabAdminSecret
 }
 function Invoke-Guest([string[]]$Arguments) {
-    & $VBox guestcontrol $Vm @Arguments --username $User --passwordfile $AuthSecret
+    if ($Phase -eq 'Experiments') {
+        & $VBox guestcontrol $Vm @Arguments --username $User --domain LAB --passwordfile $AuthSecret
+    } else {
+        & $VBox guestcontrol $Vm @Arguments --username $User --passwordfile $AuthSecret
+    }
     if ($LASTEXITCODE -ne 0) { throw 'VirtualBox guest operation failed.' }
 }
 

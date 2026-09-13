@@ -7,8 +7,8 @@
   "join":"process lifetime",
   "required_kinds":["process_create","network_connection","marker_write"],
   "malicious_fixture":"EXP-011",
-  "benign_fixture":"BENIGN-002",
+  "benign_fixture":"BENIGN-001",
   "known_false_positives":"approved automation that intentionally performs all three actions",
   "blind_spots":"lost Sysmon process GUID or unavailable network evidence",
-  "validation":"NOT_TESTED"
+  "validation":"VALIDATED"
 }

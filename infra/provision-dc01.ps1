@@ -1,4 +1,5 @@
 $ErrorActionPreference = 'Stop'
+$ProvisionStart = [DateTime]::UtcNow
 
 $VBox = 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe'
 $Iso = 'C:\Users\Example\Downloads\enterprise-purple-range-media\WindowsServer2025-EVAL-en-us.iso'
@@ -24,7 +25,10 @@ if (-not (Test-Path -LiteralPath $PasswordFile)) {
 & $VBox storageattach $Vm --storagectl SATA --port 0 --device 0 --type hdd --medium (Join-Path $VmRoot 'EPR-DC01.vdi')
 & $VBox unattended install $Vm --iso $Iso --user lablocal --full-user-name 'AVR Lab Local' --user-password-file $PasswordFile --admin-password-file $PasswordFile --image-index 2 --locale en_US --country US --time-zone 'Europe/Istanbul' --hostname dc01.lab.avr.local --install-additions *> $null
 if ($LASTEXITCODE -ne 0) { throw 'VirtualBox unattended preparation failed.' }
-$Answer = Get-ChildItem -LiteralPath $VmRoot -Filter '*-autounattend.xml' | Select-Object -Single -ExpandProperty FullName
+$Answers = @(Get-ChildItem -LiteralPath $VmRoot -Filter '*-autounattend.xml' |
+    Where-Object LastWriteTimeUtc -ge $ProvisionStart)
+if ($Answers.Count -ne 1) { throw 'Expected exactly one generated answer file.' }
+$Answer = $Answers[0].FullName
 $Xml = [IO.File]::ReadAllText($Answer)
 $Needle = '</CreatePartitions>'
 $Partition = @'

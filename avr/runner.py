@@ -45,7 +45,7 @@ EXPERIMENTS = {
         "DC01",
         VMRequirement("EPR-WIN11", "080027880020"),
         r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
-        ("-NoProfile", "-NonInteractive", "-File", r"C:\AVR-Lab\Experiments\EXP-011.ps1"),
+        ("-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", r"C:\AVR-Lab\Experiments\EXP-011.ps1"),
         VMRequirement("EPR-DC01", "080027880010"),
     ),
 }
@@ -74,7 +74,7 @@ def prepare(experiment_id: str, target_ip: str) -> tuple[Experiment, Path]:
     validate_vm(_show_vm(experiment.vm.name), experiment.vm)
     if experiment.target_vm is not None:
         validate_vm(_show_vm(experiment.target_vm.name), experiment.target_vm)
-    secret = ROOT / "secrets" / "win11-password.txt"
+    secret = ROOT / "secrets" / "labadmin-password.txt"
     if not secret.is_file():
         raise AuthorizationError("lab password file is unavailable")
     return experiment, secret
@@ -83,9 +83,9 @@ def prepare(experiment_id: str, target_ip: str) -> tuple[Experiment, Path]:
 def execute(experiment_id: str, target_ip: str) -> int:
     experiment, secret = prepare(experiment_id, target_ip)
     command = [
-        str(VBOX), "guestcontrol", experiment.vm.name, "run", "--username", "lablocal",
-        "--passwordfile", str(secret), "--exe", experiment.executable, "--",
-        experiment.executable, *experiment.arguments,
+        str(VBOX), "guestcontrol", experiment.vm.name, "run", "--username", "labadmin",
+        "--domain", "LAB", "--passwordfile", str(secret), "--exe", experiment.executable,
+        "--", *experiment.arguments,
     ]
     return subprocess.run(command, check=False, timeout=120).returncode
 

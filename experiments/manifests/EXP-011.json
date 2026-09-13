@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-011",
+  "timestamp_utc": "2026-09-13T23:27:35.514767Z",
+  "source_host": "WIN11",
+  "target_host": "DC01",
+  "synthetic_identity": "LAB\\labadmin",
+  "tool": "Windows PowerShell 5.1",
+  "technique": "T1059.001",
+  "expected_outcome": "Process, network, and marker evidence correlate on one process lifetime.",
+  "actual_outcome": "REPRODUCED",
+  "endpoint_evidence": ["Sysmon records 3089, 3153, 3230"],
+  "network_evidence": ["VirtualBox NIC trace TCP 10.88.0.20:58955 to 10.88.0.10:53"],
+  "identity_evidence": [],
+  "artifact_hashes": [{"name":"EPR-EXP-011.pcap","size":20905,"sha256":"336fd91b80134a92cbeb6d811c08183ba08d418aa4fd9bcbcf1001373f24e2cc","tracked":false}],
+  "detections": ["EPR-CORR-001"],
+  "cleanup_status": "VERIFIED"
+}

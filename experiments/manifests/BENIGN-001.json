@@ -1,0 +1,17 @@
+{
+  "experiment_id": "BENIGN-001",
+  "timestamp_utc": "2026-09-13T23:31:18.4732909Z",
+  "source_host": "WIN11",
+  "target_host": "WIN11",
+  "synthetic_identity": "LAB\\labadmin",
+  "tool": "whoami.exe",
+  "technique": null,
+  "expected_outcome": "Identity query produces process telemetry and no network traffic.",
+  "actual_outcome": "REPRODUCED",
+  "endpoint_evidence": ["Sysmon record 3710"],
+  "network_evidence": ["Complete 44-byte PCAP header with zero packets"],
+  "identity_evidence": [],
+  "artifact_hashes": [{"name":"EPR-BENIGN-001.pcap","size":44,"sha256":"aa2b4ad8a522140b322c66bfe4f59f00801a24a2bf2fef6e756041424bc7735d","tracked":false}],
+  "detections": [],
+  "cleanup_status": "NOT_REQUIRED"
+}
