@@ -12,6 +12,7 @@
   "approved_pairs": [
     ["KALI", "META"],
     ["KALI", "WIN11"],
+    ["WIN11", "WIN11"],
     ["WIN11", "DC01"],
     ["WIN11", "META"]
   ],
