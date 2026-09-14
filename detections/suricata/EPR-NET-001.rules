@@ -1,0 +1,2 @@
+alert ftp $HOME_NET any -> $HOME_NET 21 (msg:"EPR ProFTPD mod_copy process-command copy"; flow:to_server,established; content:"SITE CPFR /proc/self/cmdline"; fast_pattern; reference:cve,2015-3306; classtype:web-application-attack; sid:4208801; rev:1;)
+alert ftp $HOME_NET any -> $HOME_NET 21 (msg:"EPR ProFTPD mod_copy web-root destination"; flow:to_server,established; content:"SITE CPTO /var/www/"; fast_pattern; reference:cve,2015-3306; classtype:web-application-attack; sid:4208802; rev:1;)

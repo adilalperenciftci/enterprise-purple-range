@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-002",
+  "timestamp_utc": "2026-09-14T06:27:56Z",
+  "source_host": "KALI",
+  "target_host": "META",
+  "synthetic_identity": null,
+  "tool": "Metasploit Framework / exploit/unix/ftp/proftpd_modcopy_exec",
+  "technique": "T1190",
+  "expected_outcome": "Obtain transient command execution and create only the fixed proof marker.",
+  "actual_outcome": "CONFIRMED",
+  "endpoint_evidence": ["Command output uid=33(www-data), hostname epr-meta, fixed /tmp/epr-exp002-marker created"],
+  "network_evidence": ["FTP CPFR/CPTO, HTTP payload request, and reverse TCP 10.88.0.40:45653 to 10.88.0.30:4445"],
+  "identity_evidence": [],
+  "artifact_hashes": [{"name":"EPR-EXP-002-REPLAY.pcap","size":136468,"sha256":"0b987fcf7a65089557cf5ae1e910beb66ea7a3e79feaa24075fda7022c61943f","tracked":false}],
+  "detections": ["EPR-NET-001"],
+  "cleanup_status": "VERIFIED_AFTER_TARGET-INSTRUMENTED_RESTORE"
+}

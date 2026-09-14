@@ -13,6 +13,10 @@ META = {
     "name": "EPR-META", "VMState": "running", "nic1": "null", "nic2": "intnet",
     "intnet2": "epr-isolated", "macaddress2": "080027880040",
 }
+WIN11 = {
+    "name": "EPR-WIN11", "VMState": "running", "nic1": "intnet",
+    "intnet1": "epr-isolated", "macaddress1": "080027880020", "nic2": "none",
+}
 
 
 class LinuxRunnerTests(unittest.TestCase):
@@ -23,11 +27,14 @@ class LinuxRunnerTests(unittest.TestCase):
         self.assertNotIn("/24", command)
 
     @patch("pathlib.Path.is_file", return_value=True)
-    @patch("avr.linux_runner._show_vm", side_effect=[KALI, META])
+    @patch("avr.linux_runner._show_vm", side_effect=[KALI, META, WIN11])
     def test_valid_pair_checks_both_live_vms(self, show_vm, _is_file) -> None:
         experiment, _ = prepare("EXP-001", "10.88.0.40")
         self.assertEqual(experiment.source, "KALI")
-        self.assertEqual([call.args[0] for call in show_vm.call_args_list], ["EPR-KALI", "EPR-META"])
+        self.assertEqual(
+            [call.args[0] for call in show_vm.call_args_list],
+            ["EPR-KALI", "EPR-META", "EPR-WIN11"],
+        )
 
     def test_nonliteral_and_external_targets_fail_before_vm_access(self) -> None:
         for target in ("10.88.0.0/24", "192.0.2.1", "8.8.8.8", "META"):

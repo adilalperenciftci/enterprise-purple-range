@@ -4,7 +4,7 @@ import argparse
 import json
 import os
 import subprocess
-import time
+import shlex
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -22,6 +22,7 @@ class LinuxExperiment:
     target: str
     source_vm: VMRequirement
     target_vm: VMRequirement
+    controller_vm: VMRequirement
     command: str
 
 
@@ -31,6 +32,7 @@ EXPERIMENTS = {
         "META",
         VMRequirement("EPR-KALI", "080027880030"),
         VMRequirement("EPR-META", "080027880040", 2),
+        VMRequirement("EPR-WIN11", "080027880020"),
         "nmap -Pn -n -sT -sV --version-light --top-ports 100 10.88.0.40 -oN /tmp/epr-exp001.txt",
     ),
 }
@@ -58,40 +60,25 @@ def prepare(experiment_id: str, target_ip: str) -> tuple[LinuxExperiment, Path]:
     manifest.authorize(experiment.source, experiment.target, target_ip)
     validate_vm(_show_vm(experiment.source_vm.name), experiment.source_vm)
     validate_vm(_show_vm(experiment.target_vm.name), experiment.target_vm)
-    secret = ROOT / "secrets" / "kali-password.txt"
+    validate_vm(_show_vm(experiment.controller_vm.name), experiment.controller_vm)
+    secret = ROOT / "secrets" / "labadmin-password.txt"
     if not secret.is_file():
-        raise AuthorizationError("Kali lab password file is unavailable")
+        raise AuthorizationError("controller password file is unavailable")
     return experiment, secret
-
-
-def _control(*arguments: str) -> None:
-    result = subprocess.run([str(VBOX), "controlvm", "EPR-KALI", *arguments], check=False, timeout=15)
-    if result.returncode:
-        raise RuntimeError("VirtualBox console input failed")
 
 
 def execute(experiment_id: str, target_ip: str) -> int:
     experiment, secret = prepare(experiment_id, target_ip)
-    password = secret.read_text(encoding="utf-8").strip()
-    if not password or any(character.isspace() for character in password):
-        raise AuthorizationError("Kali lab password is malformed")
-
-    _control("keyboardputscancode", "1d", "38", "3d", "bd", "b8", "9d")
-    time.sleep(2)
-    _control("keyboardputscancode", "1c", "9c")
-    time.sleep(1)
-    _control("keyboardputstring", "vagrant")
-    time.sleep(1)
-    _control("keyboardputscancode", "1c", "9c")
-    time.sleep(1)
-    _control("keyboardputstring", password)
-    time.sleep(1)
-    _control("keyboardputscancode", "1c", "9c")
-    time.sleep(2)
-    _control("keyboardputstring", experiment.command)
-    time.sleep(1)
-    _control("keyboardputscancode", "1c", "9c")
-    return 0
+    command = [
+        str(VBOX), "guestcontrol", experiment.controller_vm.name, "run",
+        "--username", "labadmin", "--domain", "LAB", "--passwordfile", str(secret),
+        "--wait-stdout", "--wait-stderr", "--timeout", "120000",
+        "--exe", r"C:\Windows\System32\OpenSSH\ssh.exe", "--",
+        "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no",
+        "-o", "UserKnownHostsFile=NUL", "-i", r"C:\AVR-Lab\Keys\kali_key",
+        "vagrant@10.88.0.30", *shlex.split(experiment.command),
+    ]
+    return subprocess.run(command, check=False, timeout=130).returncode
 
 
 def main() -> int:

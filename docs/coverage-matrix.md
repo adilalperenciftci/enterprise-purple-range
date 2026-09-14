@@ -4,8 +4,8 @@
 
 | Experiment | ATT&CK | Network | Endpoint | Identity | Credential | Persistence | Detection | Benign | Variant | Result |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| EXP-001 | T1046 | yes | no | no | no | no | pending | pending | no | NOT_TESTED |
-| EXP-002 | T1190 | yes | yes | no | no | no | pending | pending | no | NOT_TESTED |
+| EXP-001 | T1046 | yes | no | no | no | no | none | pending | no | REPRODUCED |
+| EXP-002 | T1190 | yes | yes | no | no | no | EPR-NET-001 | normal FTP | replayed | CONFIRMED/DETECTED |
 | EXP-003 | T1190 | yes | yes | no | no | no | pending | pending | no | NOT_TESTED |
 | EXP-004 | T1190 | yes | yes | no | no | no | pending | pending | yes | NOT_TESTED |
 | EXP-005 | T1059.001 | no | yes | no | no | no | pending | BENIGN-002 | yes | NOT_TESTED |

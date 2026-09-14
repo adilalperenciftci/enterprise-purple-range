@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-001",
+  "timestamp_utc": "2026-09-14T06:21:00Z",
+  "source_host": "KALI",
+  "target_host": "META",
+  "synthetic_identity": null,
+  "tool": "Nmap 7.99",
+  "technique": "T1046",
+  "expected_outcome": "Enumerate only the manifest-approved target using a fixed literal address.",
+  "actual_outcome": "REPRODUCED",
+  "endpoint_evidence": [],
+  "network_evidence": ["ProFTPD 1.3.5, OpenSSH 6.6.1p1, Apache 2.4.7, Samba, CUPS, MySQL, and Jetty observed"],
+  "identity_evidence": [],
+  "artifact_hashes": [{"name":"EPR-EXP-001.pcap","size":43422,"sha256":"7ebf120c2831b880721e61b206ab0c7e98fe1e221f54a6b43c123a54f394f780","tracked":false}],
+  "detections": [],
+  "cleanup_status": "NOT_REQUIRED"
+}
