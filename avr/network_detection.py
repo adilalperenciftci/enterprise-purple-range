@@ -26,3 +26,14 @@ def detect_proftpd_modcopy(payloads: Iterable[bytes], *, complete: bool) -> Netw
     if cpfr and cpto:
         return NetworkDetection("SUSPICIOUS", ("EPR-NET-PROFTPD-MODCOPY",))
     return NetworkDetection("BENIGN", ())
+
+
+def detect_payroll_union(payloads: Iterable[bytes], *, complete: bool) -> NetworkDetection:
+    if not complete:
+        return NetworkDetection("NOT_EVALUABLE", ("EPR-NET-MISSING-HTTP",))
+    stream = b"".join(payloads).lower()
+    if len(stream) > MAX_REASSEMBLED_BYTES:
+        return NetworkDetection("NOT_EVALUABLE", ("EPR-NET-STREAM-LIMIT",))
+    if b"post /payroll_app.php" in stream and (b"union+select" in stream or b"union%20select" in stream):
+        return NetworkDetection("SUSPICIOUS", ("EPR-WEB-PAYROLL-UNION",))
+    return NetworkDetection("BENIGN", ())

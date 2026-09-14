@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-003",
+  "timestamp_utc": "2026-09-14T06:41:00Z",
+  "source_host": "KALI",
+  "target_host": "META",
+  "synthetic_identity": null,
+  "tool": "Metasploit Framework",
+  "technique": "T1190",
+  "expected_outcome": "Obtain controlled execution through a second network service.",
+  "actual_outcome": "INCONCLUSIVE",
+  "endpoint_evidence": [],
+  "network_evidence": ["Samba usermap and UnrealIRCd modules did not create a session; Drupalgeddon2 check reported vulnerable but execution created no session"],
+  "identity_evidence": [],
+  "artifact_hashes": [],
+  "detections": [],
+  "cleanup_status": "NO_SESSION_CREATED"
+}

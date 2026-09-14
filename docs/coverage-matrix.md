@@ -6,8 +6,8 @@
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
 | EXP-001 | T1046 | yes | no | no | no | no | none | pending | no | REPRODUCED |
 | EXP-002 | T1190 | yes | yes | no | no | no | EPR-NET-001 | normal FTP | replayed | CONFIRMED/DETECTED |
-| EXP-003 | T1190 | yes | yes | no | no | no | pending | pending | no | NOT_TESTED |
-| EXP-004 | T1190 | yes | yes | no | no | no | pending | pending | yes | NOT_TESTED |
+| EXP-003 | T1190 | yes | yes | no | no | no | none | pending | attempted | INCONCLUSIVE |
+| EXP-004 | T1190 | yes | yes | no | no | no | EPR-NET-001/4208803 | normal login | encoded | CONFIRMED/DETECTED |
 | EXP-005 | T1059.001 | no | yes | no | no | no | pending | BENIGN-002 | yes | NOT_TESTED |
 | EXP-006 | T1059.003 | no | yes | no | no | no | pending | BENIGN-001 | yes | NOT_TESTED |
 | EXP-007 | T1082 | no | yes | no | no | no | pending | BENIGN-001 | no | NOT_TESTED |

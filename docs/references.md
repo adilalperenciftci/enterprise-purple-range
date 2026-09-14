@@ -9,3 +9,7 @@
 
 The reviewed Atomic definitions are pinned to commit `388942adbd9641f4dfdcf079d7efe9a75ec0ac43`. `range/atomic-selection.json` lists the six selected test GUIDs. Credential dumping, browser access, BloodHound collection, security-control tampering, and downloaded executable payload tests were excluded.
 - [Vagrant VirtualBox networking](https://developer.hashicorp.com/vagrant/docs/providers/virtualbox/networking): `virtualbox__intnet` places a private-network interface on a named VirtualBox internal network. Vagrant assumes adapter 1 is NAT, so the isolation script disconnects it after provisioning and the runtime guard verifies that state.
+# References
+
+- Rapid7, [Metasploitable3 vulnerabilities](https://github.com/rapid7/metasploitable3/wiki/Vulnerabilities). The project records only services observed in its own isolated image; the upstream catalog is used to select candidate modules, not as proof of exploitability.
+- Rapid7, [Metasploitable3 source repository](https://github.com/rapid7/metasploitable3).

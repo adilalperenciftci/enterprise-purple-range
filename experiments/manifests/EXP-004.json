@@ -1,0 +1,17 @@
+{
+  "experiment_id": "EXP-004",
+  "timestamp_utc": "2026-09-14T06:45:00Z",
+  "source_host": "KALI",
+  "target_host": "META",
+  "synthetic_identity": null,
+  "tool": "curl",
+  "technique": "T1190",
+  "expected_outcome": "Demonstrate SQL injection without retrieving stored data.",
+  "actual_outcome": "CONFIRMED",
+  "endpoint_evidence": ["Application returned only the injected EPR/SYNTHETIC/MARKER/0 row"],
+  "network_evidence": ["HTTP POST with URL-encoded UNION SELECT to /payroll_app.php"],
+  "identity_evidence": [],
+  "artifact_hashes": [{"name":"EPR-EXP-004.pcap","size":16728,"sha256":"232c4622259b4110d3c7e2f06ffff09f404fb17fe52e332e366465fca6c1f1b0","tracked":false}],
+  "detections": ["EPR-NET-001/SID-4208803"],
+  "cleanup_status": "NOT_REQUIRED"
+}
