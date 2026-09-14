@@ -1,3 +1,5 @@
+[CmdletBinding()]
+param([ValidateSet('kali', 'meta', 'all')][string]$MachineName = 'all')
 $ErrorActionPreference = 'Stop'
 
 $VBox = 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe'
@@ -6,10 +8,12 @@ $VagrantRoot = Join-Path $Root 'infra\range'
 $SecretRoot = Join-Path $Root 'secrets'
 New-Item -ItemType Directory -Path $SecretRoot -Force | Out-Null
 
-foreach ($Machine in @(
+$Machines = @(
     @{ Vagrant = 'kali'; User = 'vagrant'; Secret = 'kali-password.txt'; Vm = 'EPR-KALI'; Mac = '080027880030' },
     @{ Vagrant = 'meta'; User = 'vagrant'; Secret = 'meta-password.txt'; Vm = 'EPR-META'; Mac = '080027880040' }
-)) {
+)
+if ($MachineName -ne 'all') { $Machines = @($Machines | Where-Object Vagrant -eq $MachineName) }
+foreach ($Machine in $Machines) {
     $Secret = Join-Path $SecretRoot $Machine.Secret
     if (-not (Test-Path -LiteralPath $Secret)) {
         $bytes = New-Object byte[] 24
