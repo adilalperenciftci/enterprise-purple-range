@@ -1,12 +1,14 @@
+param(
+    [string]$Iso = (Join-Path $env:USERPROFILE 'Downloads\enterprise-purple-range-media\Windows11Enterprise25H2-EVAL-en-us.iso'),
+    [string]$BaseRoot = (Join-Path $env:USERPROFILE 'VirtualBox VMs\EPR-Range')
+)
 $ErrorActionPreference = 'Stop'
 $ProvisionStart = [DateTime]::UtcNow
 
 $VBox = 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe'
-$Iso = 'C:\Users\Example\Downloads\enterprise-purple-range-media\Windows11Enterprise25H2-EVAL-en-us.iso'
 $Vm = 'EPR-WIN11'
-$BaseRoot = 'C:\Users\Example\VirtualBox VMs\EPR-Range'
 $VmRoot = Join-Path $BaseRoot $Vm
-$SecretRoot = 'C:\Users\Example\Projects\enterprise-purple-range\secrets'
+$SecretRoot = Join-Path (Split-Path $PSScriptRoot -Parent) 'secrets'
 $PasswordFile = Join-Path $SecretRoot 'win11-password.txt'
 
 if (-not (Test-Path -LiteralPath $Iso)) { throw 'Official Windows 11 Enterprise evaluation ISO is unavailable.' }

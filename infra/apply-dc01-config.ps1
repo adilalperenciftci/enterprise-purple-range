@@ -1,9 +1,11 @@
 [CmdletBinding()]
-param([Parameter(Mandatory)][ValidateSet('Promote', 'Identities')][string]$Phase)
+param(
+    [Parameter(Mandatory)][ValidateSet('Promote', 'Identities')][string]$Phase,
+    [string]$Root = (Split-Path $PSScriptRoot -Parent)
+)
 $ErrorActionPreference = 'Stop'
 
 $VBox = 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe'
-$Root = 'C:\Users\Example\Projects\enterprise-purple-range'
 $SecretRoot = Join-Path $Root 'secrets'
 $LoginSecret = Join-Path $SecretRoot 'dc01-password.txt'
 $DsrmSecret = Join-Path $SecretRoot 'dsrm-password.txt'

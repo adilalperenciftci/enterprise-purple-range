@@ -2,7 +2,7 @@
   "schema_version": 1,
   "domain": "LAB.AVR.LOCAL",
   "network": "10.88.0.0/24",
-  "physical_networks": ["192.0.2.0/24", "172.16.0.0/12"],
+  "physical_networks": ["192.0.2.0/24", "198.51.100.0/24"],
   "hosts": {
     "DC01": {"ip": "10.88.0.10", "role": "domain_controller"},
     "WIN11": {"ip": "10.88.0.20", "role": "endpoint"},

@@ -17,7 +17,7 @@ class AuthorizationTests(unittest.TestCase):
         self.assertEqual(self.manifest.authorize("KALI", "WIN11", "10.88.0.20").name, "WIN11")
 
     def test_rejects_external_and_target_expressions(self) -> None:
-        for target in ("192.0.2.1", "172.16.1.1", "127.0.0.1", "8.8.8.8", "1.1.1.1", "0.0.0.0/0", "10.88.0.0/24", "win11", "10.88.0.20,10.88.0.10"):
+        for target in ("192.0.2.1", "198.51.100.1", "127.0.0.1", "8.8.8.8", "1.1.1.1", "0.0.0.0/0", "10.88.0.0/24", "win11", "10.88.0.20,10.88.0.10"):
             with self.subTest(target=target), self.assertRaises(AuthorizationError):
                 self.manifest.authorize("KALI", "WIN11", target)
 

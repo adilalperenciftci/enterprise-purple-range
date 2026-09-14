@@ -1,12 +1,14 @@
+param(
+    [string]$Iso = (Join-Path $env:USERPROFILE 'Downloads\enterprise-purple-range-media\WindowsServer2025-EVAL-en-us.iso'),
+    [string]$BaseRoot = (Join-Path $env:USERPROFILE 'VirtualBox VMs')
+)
 $ErrorActionPreference = 'Stop'
 $ProvisionStart = [DateTime]::UtcNow
 
 $VBox = 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe'
-$Iso = 'C:\Users\Example\Downloads\enterprise-purple-range-media\WindowsServer2025-EVAL-en-us.iso'
 $Vm = 'EPR-DC01'
-$BaseRoot = 'C:\Users\Example\VirtualBox VMs'
-$VmRoot = 'C:\Users\Example\VirtualBox VMs\EPR-DC01'
-$SecretRoot = 'C:\Users\Example\Projects\enterprise-purple-range\secrets'
+$VmRoot = Join-Path $BaseRoot $Vm
+$SecretRoot = Join-Path (Split-Path $PSScriptRoot -Parent) 'secrets'
 $PasswordFile = Join-Path $SecretRoot 'dc01-password.txt'
 
 if (-not (Test-Path -LiteralPath $Iso)) { throw 'Official Windows Server evaluation ISO is unavailable.' }

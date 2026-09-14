@@ -1,10 +1,12 @@
 [CmdletBinding()]
-param([Parameter(Mandatory)][ValidateSet('Telemetry', 'DomainJoin', 'Experiments')][string]$Phase)
+param(
+    [Parameter(Mandatory)][ValidateSet('Telemetry', 'DomainJoin', 'Experiments')][string]$Phase,
+    [string]$Root = (Split-Path $PSScriptRoot -Parent),
+    [string]$ToolRoot = (Join-Path $env:LOCALAPPDATA 'enterprise-purple-range-tools')
+)
 $ErrorActionPreference = 'Stop'
 
 $VBox = 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe'
-$Root = 'C:\Users\Example\Projects\enterprise-purple-range'
-$ToolRoot = 'C:\Users\Example\Downloads\enterprise-purple-range-tools'
 $SecretRoot = Join-Path $Root 'secrets'
 $LoginSecret = Join-Path $SecretRoot 'win11-password.txt'
 $DomainSecrets = Join-Path $SecretRoot 'domain-passwords.json'

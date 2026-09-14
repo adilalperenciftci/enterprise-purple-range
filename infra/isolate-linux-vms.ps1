@@ -1,9 +1,11 @@
 [CmdletBinding()]
-param([ValidateSet('kali', 'meta', 'all')][string]$MachineName = 'all')
+param(
+    [ValidateSet('kali', 'meta', 'all')][string]$MachineName = 'all',
+    [string]$Root = (Split-Path $PSScriptRoot -Parent)
+)
 $ErrorActionPreference = 'Stop'
 
 $VBox = 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe'
-$Root = 'C:\Users\Example\Projects\enterprise-purple-range'
 $VagrantRoot = Join-Path $Root 'infra\range'
 $SecretRoot = Join-Path $Root 'secrets'
 New-Item -ItemType Directory -Path $SecretRoot -Force | Out-Null
